@@ -30,8 +30,8 @@ Atmel AVR ATtiny45 / ATtiny85で動作できるように作成してあります
   * KATO スタンダードSX
 
 ## 対応する基板設計データ
-  * Atmel ATtiny45 DCC Decoder PCB for TOMIX 8919
-  * Atmel ATtiny45 DCC Decoder PCB for TOMIX 0507/0773
+  * [Atmel ATtiny45 DCC Decoder PCB for TOMIX 8919](https://github.com/ytsurui/dcc-funcdecoder-pcb-t8919d)
+  * [Atmel ATtiny45 DCC Decoder PCB for TOMIX 0507/0773](https://github.com/ytsurui/dcc-funcdecoder-pcb-t0507d)
 
 回路を独自に組んで動かす場合は、基板設計データに含まれる回路図を参考にしてください。
 
