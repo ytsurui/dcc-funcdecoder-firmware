@@ -26,29 +26,7 @@ uint8_t funcCount2 = 0;
 
 void clockReceiverFuncCtrl(void)
 {
-	//uint8_t directionFlag;
-	//directionFlag = readDirectionFlag();
-	//funcSetPort(0, CV33, 0x1F, 1, directionFlag);
-	//funcSetPort(1, CV34, 0x1F, 1, directionFlag);
-	//funcSetPort(2, CV35, 0x1F, 1, directionFlag);
-	
-	uint8_t i, mask;
-	
-	/*
-	mask = 0x01;
-	for (i = 0; i < 3; i++) {
-		if (funcPortStat & mask) {
-			func_ctrl(i, 1);
-		} else {
-			func_ctrl(i, 0);
-		}
-		mask = mask << 1;
-	}
-	
-	
-	return;
-	*/
-	
+	uint8_t i, mask, dirFlag;
 	
 	funcCount++;
 	if (funcCount > FUNC_COUNT_MAX) funcCount = 0;
@@ -59,6 +37,39 @@ void clockReceiverFuncCtrl(void)
 			// Analog Function On
 			if ((CV33_37[i + 2] & 0xC0) == 0) {
 				funcPortStat |= (1 << i);
+			} else {
+				dirFlag = readDirectionFlag();
+				if (readDirectionReverse()) {
+					if (dirFlag == 2) {
+						dirFlag = 1;
+					} else {
+						dirFlag = 2;
+					}
+				}
+				
+				
+				if (CV33_37[i + 2] & 0x80) {
+					if (dirFlag == 2) {
+						funcPortStat |= (1 << i);
+					} else {
+						funcPortStat &= ~(1 << i);
+					}
+				} else if (CV33_37[i + 2] & 0x40) {
+					if (dirFlag == 1) {
+						funcPortStat |= (1 << i);
+					} else {
+						funcPortStat &= ~(1 << i);
+					}
+				}
+				/*
+				if (CV33_37[i + 2] & (0x20 << dirFlag)) {
+					funcPortStat |= (1 << i);
+				} else {
+					funcPortStat &= ~(1 << i);
+				}
+				*/
+			}
+			/*
 			} else if (CV33_37[i + 2] & 0x80) {
 				// Backward Only
 				if (readDirectionFlag() == 2) {
@@ -74,6 +85,7 @@ void clockReceiverFuncCtrl(void)
 					funcPortStat &= ~(1 << i);
 				}
 			}
+			*/
 		}
 		
 		if (funcPortStat & mask) {
